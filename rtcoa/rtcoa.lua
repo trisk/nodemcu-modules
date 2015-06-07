@@ -19,8 +19,6 @@ local tstat = nil
 --------------------------------------------------------------------------------
 -- Net module
 local net = net
--- String module
-local string = string
 -- CJSON module
 local cjson = cjson
 -- Limited to local environment
@@ -35,7 +33,7 @@ end
 
 function set(resource, attributes)
   local js = cjson.encode(attributes)
-  if (js == nil) then
+  if js == nil then
     return
   end
   local sk = net.createConnection(net.TCP, false)
@@ -43,7 +41,7 @@ function set(resource, attributes)
     s:send("POST /tstat/" .. resource .. " HTTP/1.1\r\n" ..
       "Host: " .. tstat .. "\r\nAccept: */*\r\n" ..
       "Content-Type: application/json\r\n" ..
-      "Content-Length: " .. string.len(js) .. "\r\n\r\n" .. js)
+      "Content-Length: " .. #js .. "\r\n\r\n" .. js)
   end)
   sk:on("receive", function(s, p)
     s:close()
